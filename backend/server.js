@@ -7,7 +7,7 @@ app.use(cors());
 app.use(express.json());
 
 const db = mysql.createConnection({
-  host: 'localhost',
+  host: 'nozomi.proxy.rlwy.net',
   user: 'root',
   password: 'SClxzIREJAGhmcjuxdtcJvWVKJETFDzJ',
   database: 'washtrack_db',
