@@ -46,7 +46,7 @@ function Profile({ onRefreshUserData }) {
 
       // GET DATA FROM tbl_user
       const userResponse = await fetch(
-        `http://localhost:8081/getuser/${userEmail}`
+        `${import.meta.env.VITE_API_URL}/getuser/${userEmail}`
       );
       const userData = await userResponse.json();
 
@@ -56,7 +56,7 @@ function Profile({ onRefreshUserData }) {
 
         // GET ADDRESS FROM tbl_profiles using the userId
         const profileResponse = await fetch(
-          `http://localhost:8081/getprofile/${userData.user.fld_userID}`
+          `${import.meta.env.VITE_API_URL}/getprofile/${userData.user.fld_userID}`
         );
         const profileData = await profileResponse.json();
 
@@ -170,7 +170,7 @@ function Profile({ onRefreshUserData }) {
         }
 
         // Verify old password first
-        const verifyResponse = await fetch('http://localhost:8081/verifypassword', {
+        const verifyResponse = await fetch(`${import.meta.env.VITE_API_URL}/verifypassword`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -189,7 +189,7 @@ function Profile({ onRefreshUserData }) {
         }
 
         // Update password if old password is correct
-        const passwordResponse = await fetch('http://localhost:8081/updatepassword', {
+        const passwordResponse = await fetch(`${import.meta.env.VITE_API_URL}/updatepassword`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
@@ -209,7 +209,7 @@ function Profile({ onRefreshUserData }) {
       }
       
       // FOR UPDATING tbl_user
-      const userResponse = await fetch('http://localhost:8081/updateuser', {
+      const userResponse = await fetch(`${import.meta.env.VITE_API_URL}/updateuser`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -225,7 +225,7 @@ function Profile({ onRefreshUserData }) {
       if (userData.success) {
         // FOR UPDATING tbl_profiles using userId
         const profileResponse = await fetch(
-          'http://localhost:8081/updateprofile',
+          `${import.meta.env.VITE_API_URL}/updateprofile`,
           {
             method: 'PUT',
             headers: {
@@ -252,7 +252,7 @@ function Profile({ onRefreshUserData }) {
 
           if (onRefreshUserData) {
             // Fetch the updated user data
-            const updatedResponse = await fetch(`http://localhost:8081/getuser/${userEmail}`);
+            const updatedResponse = await fetch(`${import.meta.env.VITE_API_URL}/getuser/${userEmail}`);
             const updatedData = await updatedResponse.json();
           
             if (updatedData.success) {

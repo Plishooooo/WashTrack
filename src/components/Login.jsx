@@ -43,9 +43,8 @@ function Login({ onSwitchToRegister, onLoginSuccess }) {
 
     try {
       const endpoint = isAdmin
-        ? 'http://localhost:8081/loginadmin'
-        : 'http://localhost:8081/loginuser';
-
+        ? `${import.meta.env.VITE_API_URL}/loginadmin`
+        : `${import.meta.env.VITE_API_URL}/loginuser`;
       const response = await fetch(endpoint, {
         method: 'POST',
         headers: {

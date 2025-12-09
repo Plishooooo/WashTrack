@@ -28,7 +28,7 @@ function Tracking() {
       }
 
       const response = await fetch(
-        `http://localhost:8081/orders?userID=${userID}`
+        `${import.meta.env.VITE_API_URL}/orders?userID=${userID}`
       );
       const data = await response.json();
 
@@ -51,7 +51,7 @@ function Tracking() {
       }
 
       const response = await fetch(
-        `http://localhost:8081/orders?userID=${userID}`
+        `${import.meta.env.VITE_API_URL}/orders?userID=${userID}`
       );
       const data = await response.json();
 

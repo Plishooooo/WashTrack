@@ -28,7 +28,7 @@ function Management() {
 
   const fetchStaff = async () => {
     try {
-      const response = await fetch('http://localhost:8081/staff');
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/staff`);
       const result = await response.json();
       if (result.success) {
         setAccounts(result.data);
@@ -40,7 +40,7 @@ function Management() {
 
   const fetchServices = async () => {
     try {
-      const response = await fetch('http://localhost:8081/services');
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/services`);
       const result = await response.json();
       if (result.success) {
         setServices(result.data);
@@ -69,7 +69,7 @@ function Management() {
 
   const confirmDelete = async (accountId) => {
     try {
-      const response = await fetch(`http://localhost:8081/staff/${accountId}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/staff/${accountId}`, {
         method: 'DELETE',
       });
       const result = await response.json();
@@ -118,7 +118,7 @@ function Management() {
     // Update in database
     const account = accounts.find((a) => a.fld_staffID === accountId);
     if (account) {
-      fetch(`http://localhost:8081/staff/${accountId}`, {
+      fetch(`${import.meta.env.VITE_API_URL}/staff/${accountId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -192,7 +192,7 @@ function Management() {
           role: newAdminForm.role,
         };
 
-        const response = await fetch('http://localhost:8081/staff', {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/staff`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
