@@ -92,15 +92,15 @@ function Reports() {
       setLoading(true);
 
       // Fetch all reports with order details
-      const reportsResponse = await fetch('http://localhost:8081/reports');
+      const reportsResponse = await fetch(`${import.meta.env.VITE_API_URL}/reports`);
       const reportsData = await reportsResponse.json();
 
       // Fetch all orders for revenue calculation
-      const ordersResponse = await fetch('http://localhost:8081/orders');
+      const ordersResponse = await fetch(`${import.meta.env.VITE_API_URL}/orders`);
       const ordersData = await ordersResponse.json();
 
       // Fetch all users
-      const usersResponse = await fetch('http://localhost:8081/allusers');
+      const usersResponse = await fetch(`${import.meta.env.VITE_API_URL}/allusers`);
       const usersData = await usersResponse.json();
 
       if (reportsData.success && ordersData.success && usersData.success) {

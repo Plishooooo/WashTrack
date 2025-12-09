@@ -36,7 +36,7 @@ function Orders() {
   const refreshOrderData = async (userId) => {
     try {
       const response = await fetch(
-        `http://localhost:8081/orders?userID=${userId}`
+        `${import.meta.env.VITE_API_URL}/orders?userID=${userId}`
       );
       const result = await response.json();
       if (result.success) {
@@ -53,7 +53,7 @@ function Orders() {
   const fetchUserOrders = async (userId) => {
     try {
       const response = await fetch(
-        `http://localhost:8081/orders?userID=${userId}`
+        `${import.meta.env.VITE_API_URL}/orders?userID=${userId}`
       );
       const result = await response.json();
       if (result.success) {

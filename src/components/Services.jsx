@@ -45,7 +45,7 @@ function Services() {
 
   const fetchServices = async () => {
     try {
-      const response = await fetch('http://localhost:8081/services');
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/services`);
       const result = await response.json();
       if (result.success) {
         setServices(result.data);
@@ -63,7 +63,7 @@ function Services() {
 
   const confirmDelete = async (id) => {
     try {
-      const response = await fetch(`http://localhost:8081/services/${id}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/services/${id}`, {
         method: 'DELETE',
       });
       const result = await response.json();
@@ -135,7 +135,7 @@ function Services() {
 
     try {
       const response = await fetch(
-        `http://localhost:8081/services/${editService}`,
+        `${import.meta.env.VITE_API_URL}/services/${editService}`,
         {
           method: 'PUT',
           headers: {
@@ -223,7 +223,7 @@ function Services() {
     }
 
     try {
-      const response = await fetch('http://localhost:8081/services', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/services`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

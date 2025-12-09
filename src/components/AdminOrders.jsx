@@ -60,7 +60,7 @@ function AdminOrders() {
 
   const fetchOrders = async () => {
     try {
-      const response = await fetch('http://localhost:8081/orders');
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/orders`);
       const result = await response.json();
       if (result.success) {
         setOrders(result.data);
@@ -81,7 +81,7 @@ function AdminOrders() {
   const fetchServices = async () => {
     try {
       console.log('Fetching services...');
-      const response = await fetch('http://localhost:8081/services');
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/services`);
       const result = await response.json();
       console.log('Services response:', result);
       if (result.success) {
@@ -205,7 +205,7 @@ function AdminOrders() {
     );
 
     // Update in database
-    fetch(`http://localhost:8081/orders/${orderId}`, {
+    fetch(`${import.meta.env.VITE_API_URL}/orders/${orderId}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -223,7 +223,7 @@ function AdminOrders() {
 
   const createReport = async (orderId) => {
     try {
-      const reportResponse = await fetch('http://localhost:8081/reports', {
+      const reportResponse = await fetch(`${import.meta.env.VITE_API_URL}/reports`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -338,12 +338,12 @@ function AdminOrders() {
 
       console.log(
         'Sending PUT request to:',
-        `http://localhost:8081/orders/${editOrder}`
+        `${import.meta.env.VITE_API_URL}/orders/${editOrder}`
       );
       console.log('Order data:', orderData);
 
       const response = await fetch(
-        `http://localhost:8081/orders/${editOrder}`,
+        `${import.meta.env.VITE_API_URL}/orders/${editOrder}`,
         {
           method: 'PUT',
           headers: {
@@ -409,7 +409,7 @@ function AdminOrders() {
   const confirmDelete = (orderId) => {
     if (!orderId) return;
 
-    fetch(`http://localhost:8081/orders/${orderId}`, {
+    fetch(`${import.meta.env.VITE_API_URL}/orders/${orderId}`, {
       method: 'DELETE',
     })
       .then((response) => response.json())
@@ -502,7 +502,7 @@ function AdminOrders() {
     try {
       console.log('Fetching user data for ID:', userID);
       const response = await fetch(
-        `http://localhost:8081/getuser/id/${userID}`
+        `${import.meta.env.VITE_API_URL}/getuser/id/${userID}`
       );
       const result = await response.json();
       console.log('User fetch result:', result);
@@ -562,7 +562,7 @@ function AdminOrders() {
       };
       console.log('Sending order data:', orderData);
 
-      const response = await fetch('http://localhost:8081/orders', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/orders`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
