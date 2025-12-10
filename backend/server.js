@@ -45,11 +45,21 @@ db.on('error', (err) => {
 // Test database connection
 db.getConnection((err, connection) => {
   if (err) {
-    console.error('Database connection failed:', err.message);
+    console.error('Initial database connection failed:', err.message);
+    console.error('This is not fatal - the pool will retry');
   } else {
     console.log('Successfully connected to database');
     connection.release();
   }
+});
+
+// Handle uncaught exceptions
+process.on('uncaughtException', (err) => {
+  console.error('Uncaught Exception:', err);
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
 });
 
 // FOR SIGNUP FUNCTIONALITY
