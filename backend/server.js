@@ -14,10 +14,17 @@ const db = mysql.createPool({
   user: process.env.MYSQLUSER || 'root',
   password: process.env.MYSQLPASSWORD || 'SClxzIREJAGhmcjuxdtcJvWVKJETFDzJ',
   database: process.env.MYSQLDATABASE || 'washtrack_db',
-  port: process.env.MYSQLPORT || 19493,
+  port: parseInt(process.env.MYSQLPORT) || 19493,
   waitForConnections: true,
   enableKeepAlive: true
 });
+
+// Log connection details (for debugging)
+console.log('Database Connection Config:');
+console.log('Host:', process.env.MYSQLHOST || 'nozomi.proxy.rlwy.net');
+console.log('Port:', parseInt(process.env.MYSQLPORT) || 19493);
+console.log('User:', process.env.MYSQLUSER || 'root');
+console.log('Database:', process.env.MYSQLDATABASE || 'washtrack_db');
 
 // CONNECTION
 db.on('connection', (connection) => {
