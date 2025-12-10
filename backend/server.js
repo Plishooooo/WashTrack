@@ -9,12 +9,13 @@ app.use(cors({
 }));
 app.use(express.json());
 
-const db = mysql.createConnection({
+
+const db = mysql.createPool({
   host: process.env.MYSQLHOST || 'nozomi.proxy.rlwy.net',
   user: process.env.MYSQLUSER || 'root',
   password: process.env.MYSQLPASSWORD || 'SClxzIREJAGhmcjuxdtcJvWVKJETFDzJ',
   database: process.env.MYSQLDATABASE || 'washtrack_db',
-  port: process.env.MYSQLPORT || 3306,
+  port: process.env.MYSQLPORT || 19493,
   ssl: process.env.MYSQLHOST ? { rejectUnauthorized: false } : undefined
 });
 
