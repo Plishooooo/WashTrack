@@ -67,6 +67,11 @@ process.on('unhandledRejection', (reason, promise) => {
   console.error('Unhandled Rejection at:', promise, 'reason:', reason);
 });
 
+// ROOT ENDPOINT FOR HEALTH CHECK
+app.get('/', (req, res) => {
+  res.json({ status: 'OK', message: 'Server is running' });
+});
+
 // FOR SIGNUP FUNCTIONALITY
 app.post('/signupuser', (req, res) => {
   const { username, password, email, contact, address, isAdmin } = req.body;
