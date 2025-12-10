@@ -10,12 +10,11 @@ app.use(express.json());
 
 const db = mysql.createPool({
   connectionLimit: 10,
-  host: process.env.MYSQLHOST || 'nozomi.proxy.rlwy.net',
+  host: process.env.MYSQLHOST || 'mysql.railway.internal',
   user: process.env.MYSQLUSER || 'root',
   password: process.env.MYSQLPASSWORD || 'SClxzIREJAGhmcjuxdtcJvWVKJETFDzJ',
   database: process.env.MYSQLDATABASE || 'washtrack_db',
-  port: process.env.MYSQLPORT || 19493,
-  ssl: process.env.MYSQLHOST ? { rejectUnauthorized: false } : undefined,
+  port: process.env.MYSQLPORT || 3306,
   waitForConnections: true,
   enableKeepAlive: true
 });
