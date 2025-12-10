@@ -21,8 +21,13 @@ function Register({ onSwitchToLogin }) {
   // Check if user is logged in as admin
   useEffect(() => {
     const userType = localStorage.getItem('userType');
-    if (userType === 'admin') {
+    const adminID = localStorage.getItem('adminID');
+    if (userType === 'admin' && adminID) {
       setIsAdmin(true);
+    } else {
+      // Not logged in as admin - can still register as user or admin
+      setIsAdmin(false);
+      setIsAdminMode(false); // Default to user mode
     }
   }, []);
 
@@ -168,33 +173,31 @@ function Register({ onSwitchToLogin }) {
           </p>
         </div>
 
-        {/* Admin Mode Toggle */}
-        {isAdmin && (
-          <div className="admin-mode-toggle">
-            <button
-              type="button"
-              className={`mode-btn ${!isAdminMode ? 'active' : ''}`}
-              onClick={() => {
-                setIsAdminMode(false);
-                setError('');
-                setMessage('');
-              }}
-            >
-              User
-            </button>
-            <button
-              type="button"
-              className={`mode-btn ${isAdminMode ? 'active' : ''}`}
-              onClick={() => {
-                setIsAdminMode(true);
-                setError('');
-                setMessage('');
-              }}
-            >
-              Admin
-            </button>
-          </div>
-        )}
+        {/* Admin Mode Toggle - Always Show */}
+        <div className="admin-mode-toggle">
+          <button
+            type="button"
+            className={`mode-btn ${!isAdminMode ? 'active' : ''}`}
+            onClick={() => {
+              setIsAdminMode(false);
+              setError('');
+              setMessage('');
+            }}
+          >
+            User
+          </button>
+          <button
+            type="button"
+            className={`mode-btn ${isAdminMode ? 'active' : ''}`}
+            onClick={() => {
+              setIsAdminMode(true);
+              setError('');
+              setMessage('');
+            }}
+          >
+            Admin
+          </button>
+        </div>
 
         {error && <div className="error-message">{error}</div>}
 
