@@ -11,21 +11,46 @@ app.use(express.json());
 
 
 const db = mysql.createPool({
+  connectionLimit: 10,
   host: process.env.MYSQLHOST || 'nozomi.proxy.rlwy.net',
   user: process.env.MYSQLUSER || 'root',
   password: process.env.MYSQLPASSWORD || 'SClxzIREJAGhmcjuxdtcJvWVKJETFDzJ',
   database: process.env.MYSQLDATABASE || 'washtrack_db',
-  port: process.env.MYSQLPORT || 19493,
-  ssl: process.env.MYSQLHOST ? { rejectUnauthorized: false } : undefined
+  port: process.env.MYSQLPORT || 3306,
+  ssl: process.env.MYSQLHOST ? { rejectUnauthorized: false } : undefined,
+  waitForConnections: true,
+  enableKeepAlive: true,
+  keepAliveInitialDelayMs: 0
 });
 
 // CONNECTION
-db.connect((err) => {
+db.on('connection', (connection) => {
+  console.log('Database connection established');
+});
+
+db.on('error', (err) => {
+  console.error('Database pool error:', err.message);
+  if (err.code === 'PROTOCOL_CONNECTION_LOST') {
+    console.error('Database connection was closed.');
+  }
+  if (err.code === 'PROTOCOL_ENQUEUE_AFTER_FATAL_ERROR') {
+    console.error('Database had a fatal error.');
+  }
+  if (err.code === 'PROTOCOL_ENQUEUE_AFTER_AQUIRE_TIMEOUT') {
+    console.error('Database connection timed out.');
+  }
+  if (err.code === 'PROTOCOL_ENQUEUE_BEFORE_HANDSHAKE') {
+    console.error('Encountered error before database could establish a safe connection.');
+  }
+});
+
+// Test database connection
+db.getConnection((err, connection) => {
   if (err) {
-    console.log('Database connection failed:', err.message);
-    console.log('Error code:', err.code);
+    console.error('Database connection failed:', err.message);
   } else {
-    console.log('Connected to database');
+    console.log('Successfully connected to database');
+    connection.release();
   }
 });
 
@@ -966,20 +991,31 @@ app.post('/reports', (req, res) => {
 });
 
 app.get('/', (req, res) => {
-  db.query('SELECT 1', (err) => {
+  res.status(200).json({
+    status: 'ok',
+    message: 'WashTrack Backend API is running',
+    timestamp: new Date().toISOString(),
+    cors: 'Allowed for: https://washtrak.netlify.app'
+  });
+});
+
+app.get('/health', (req, res) => {
+  db.getConnection((err, connection) => {
     if (err) {
-      return res.status(500).json({
+      console.error('Database healthcheck failed:', err.message);
+      return res.status(503).json({
         status: 'error',
         message: 'Database connection failed',
         error: err.message
       });
     }
-    res.json({
+    
+    connection.release();
+    res.status(200).json({
       status: 'ok',
-      message: 'WashTrack Backend API is running',
+      message: 'Backend is healthy',
       database: 'Connected',
-      timestamp: new Date().toISOString(),
-      cors: 'Allowed for: https://washtrak.netlify.app'
+      timestamp: new Date().toISOString()
     });
   });
 });
