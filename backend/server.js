@@ -3,10 +3,22 @@ const mysql = require('mysql2');
 const cors = require('cors');
 const app = express();
 
-app.use(cors({
-  origin: 'https://washtrak.netlify.app',
-  credentials: true
-}));
+// CORS configuration for production
+const corsOptions = {
+  origin: function (origin, callback) {
+    // Allow requests from Netlify
+    if (!origin || origin.includes('netlify.app') || origin === 'http://localhost:3000' || origin === 'http://localhost:5173') {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 
