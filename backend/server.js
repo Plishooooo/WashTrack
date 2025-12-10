@@ -3,26 +3,9 @@ const mysql = require('mysql2');
 const cors = require('cors');
 const app = express();
 
-// CORS configuration for production
-const corsOptions = {
-  origin: function (origin, callback) {
-    // Allow requests from Netlify, localhost, and no origin (same-origin requests)
-    const allowedOrigins = ['https://washtrak.netlify.app', 'http://localhost:3000', 'http://localhost:5173'];
-    
-    if (!origin || allowedOrigins.includes(origin) || (origin && origin.includes('netlify.app'))) {
-      callback(null, true);
-    } else {
-      // Log but still allow (for debugging)
-      console.log('CORS request from:', origin);
-      callback(null, true);
-    }
-  },
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-};
-
-app.use(cors(corsOptions));
+// Simple CORS configuration - allow all origins
+app.use(cors());
+app.use(express.json());
 app.use(express.json());
 
 
