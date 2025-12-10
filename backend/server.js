@@ -989,32 +989,51 @@ app.post('/reports', (req, res) => {
 });
 
 app.get('/', (req, res) => {
-  res.status(200).json({
-    status: 'ok',
-    message: 'WashTrack Backend API is running',
-    timestamp: new Date().toISOString(),
-    cors: 'Allowed for: https://washtrak.netlify.app'
-  });
+  try {
+    res.status(200).json({
+      status: 'ok',
+      message: 'WashTrack Backend API is running',
+      timestamp: new Date().toISOString()
+    });
+  } catch (err) {
+    console.error('Root endpoint error:', err);
+    res.status(500).json({ status: 'error', message: err.message });
+  }
 });
 
 app.get('/health', (req, res) => {
-  db.getConnection((err, connection) => {
-    if (err) {
-      console.error('Database healthcheck failed:', err.message);
-      return res.status(503).json({
-        status: 'error',
-        message: 'Database connection failed',
-        error: err.message
+  try {
+    db.getConnection((err, connection) => {
+      if (err) {
+        console.error('Database healthcheck failed:', err.message);
+        return res.status(503).json({
+          status: 'error',
+          message: 'Database connection failed',
+          error: err.message
+        });
+      }
+      
+      connection.release();
+      res.status(200).json({
+        status: 'ok',
+        message: 'Backend is healthy',
+        database: 'Connected',
+        timestamp: new Date().toISOString()
       });
-    }
-    
-    connection.release();
-    res.status(200).json({
-      status: 'ok',
-      message: 'Backend is healthy',
-      database: 'Connected',
-      timestamp: new Date().toISOString()
     });
+  } catch (err) {
+    console.error('Health endpoint error:', err);
+    res.status(500).json({ status: 'error', message: err.message });
+  }
+});
+
+// Global error handler
+app.use((err, req, res, next) => {
+  console.error('Unhandled error:', err);
+  res.status(500).json({
+    status: 'error',
+    message: 'Internal server error',
+    error: err.message
   });
 });
 
