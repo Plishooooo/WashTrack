@@ -6,11 +6,15 @@ const app = express();
 // CORS configuration for production
 const corsOptions = {
   origin: function (origin, callback) {
-    // Allow requests from Netlify
-    if (!origin || origin.includes('netlify.app') || origin === 'http://localhost:3000' || origin === 'http://localhost:5173') {
+    // Allow requests from Netlify, localhost, and no origin (same-origin requests)
+    const allowedOrigins = ['https://washtrak.netlify.app', 'http://localhost:3000', 'http://localhost:5173'];
+    
+    if (!origin || allowedOrigins.includes(origin) || (origin && origin.includes('netlify.app'))) {
       callback(null, true);
     } else {
-      callback(new Error('Not allowed by CORS'));
+      // Log but still allow (for debugging)
+      console.log('CORS request from:', origin);
+      callback(null, true);
     }
   },
   credentials: true,
@@ -32,7 +36,7 @@ const db = mysql.createPool({
   ssl: process.env.MYSQLHOST ? { rejectUnauthorized: false } : undefined,
   waitForConnections: true,
   enableKeepAlive: true,
-  keepAliveInitialDelayMs: 0
+  keepAliveInitialDelayMs: 30000
 });
 
 // CONNECTION
