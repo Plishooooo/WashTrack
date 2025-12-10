@@ -35,8 +35,7 @@ const db = mysql.createPool({
   port: process.env.MYSQLPORT || 3306,
   ssl: process.env.MYSQLHOST ? { rejectUnauthorized: false } : undefined,
   waitForConnections: true,
-  enableKeepAlive: true,
-  keepAliveInitialDelayMs: 30000
+  enableKeepAlive: true
 });
 
 // CONNECTION
