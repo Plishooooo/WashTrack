@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import '../styles/Tracking.css';
+import { API_ENDPOINTS } from '../config';
 
 function Tracking() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -28,7 +29,7 @@ function Tracking() {
       }
 
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/orders?userID=${userID}`
+        API_ENDPOINTS.GET_USER_ORDERS(userID)
       );
       const data = await response.json();
 
@@ -51,7 +52,7 @@ function Tracking() {
       }
 
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/orders?userID=${userID}`
+        API_ENDPOINTS.GET_USER_ORDERS(userID)
       );
       const data = await response.json();
 

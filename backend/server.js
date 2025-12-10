@@ -3,14 +3,19 @@ const mysql = require('mysql2');
 const cors = require('cors');
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin: 'https://washtrak.netlify.app',
+  credentials: true
+}));
 app.use(express.json());
 
 const db = mysql.createConnection({
-  host: 'nozomi.proxy.rlwy.net',
-  user: 'root',
-  password: 'SClxzIREJAGhmcjuxdtcJvWVKJETFDzJ',
-  database: 'washtrack_db',
+  host: process.env.MYSQLHOST || 'nozomi.proxy.rlwy.net',
+  user: process.env.MYSQLUSER || 'root',
+  password: process.env.MYSQLPASSWORD || 'SClxzIREJAGhmcjuxdtcJvWVKJETFDzJ',
+  database: process.env.MYSQLDATABASE || 'washtrack_db',
+  port: process.env.MYSQLPORT || 3306,
+  ssl: process.env.MYSQLHOST ? { rejectUnauthorized: false } : undefined
 });
 
 // CONNECTION
@@ -959,6 +964,26 @@ app.post('/reports', (req, res) => {
   });
 });
 
-app.listen(8081, '0.0.0.0', () => {
-  console.log('Server running on port 8081');
+app.get('/', (req, res) => {
+  db.query('SELECT 1', (err) => {
+    if (err) {
+      return res.status(500).json({
+        status: 'error',
+        message: 'Database connection failed',
+        error: err.message
+      });
+    }
+    res.json({
+      status: 'ok',
+      message: 'WashTrack Backend API is running',
+      database: 'Connected',
+      timestamp: new Date().toISOString(),
+      cors: 'Allowed for: https://washtrak.netlify.app'
+    });
+  });
+});
+
+const PORT = process.env.PORT || 8081;
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Server running on port ${PORT}`);
 });

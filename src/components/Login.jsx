@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import '../styles/Login.css';
+import { API_ENDPOINTS } from '../config';
 
 function Login({ onSwitchToRegister, onLoginSuccess }) {
   const [email, setEmail] = useState('');
@@ -42,9 +43,7 @@ function Login({ onSwitchToRegister, onLoginSuccess }) {
     setLoading(true);
 
     try {
-      const endpoint = isAdmin
-        ? `${import.meta.env.VITE_API_URL}/loginadmin`
-        : `${import.meta.env.VITE_API_URL}/loginuser`;
+      const endpoint = isAdmin ? API_ENDPOINTS.LOGIN_ADMIN : API_ENDPOINTS.LOGIN_USER;
       const response = await fetch(endpoint, {
         method: 'POST',
         headers: {

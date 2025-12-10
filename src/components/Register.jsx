@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import '../styles/Register.css';
 import { showSuccessToast, showErrorToast } from '../utils/toastUtils';
+import { API_ENDPOINTS } from '../config';
 
 function Register({ onSwitchToLogin }) {
   const [isAdminMode, setIsAdminMode] = useState(false);
@@ -119,7 +120,7 @@ function Register({ onSwitchToLogin }) {
     setLoading(true);
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/signupuser`, {
+      const response = await fetch(API_ENDPOINTS.SIGNUP_USER, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
