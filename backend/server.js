@@ -3,9 +3,8 @@ const mysql = require('mysql2');
 const cors = require('cors');
 const app = express();
 
-// Simple CORS configuration - allow all origins
+// Middleware
 app.use(cors());
-app.use(express.json());
 app.use(express.json());
 
 
