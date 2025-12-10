@@ -92,15 +92,15 @@ function Reports() {
       setLoading(true);
 
       // Fetch all reports with order details
-      const reportsResponse = await fetch(`${import.meta.env.VITE_API_URL}/reports`);
+      const reportsResponse = await fetch(API_ENDPOINTS.GET_REPORTS);
       const reportsData = await reportsResponse.json();
 
       // Fetch all orders for revenue calculation
-      const ordersResponse = await fetch(`${import.meta.env.VITE_API_URL}/orders`);
+      const ordersResponse = await fetch(API_ENDPOINTS.GET_ORDERS);
       const ordersData = await ordersResponse.json();
 
       // Fetch all users
-      const usersResponse = await fetch(`${import.meta.env.VITE_API_URL}/allusers`);
+      const usersResponse = await fetch(API_ENDPOINTS.GET_ALL_USERS);
       const usersData = await usersResponse.json();
 
       if (reportsData.success && ordersData.success && usersData.success) {

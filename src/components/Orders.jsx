@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import '../styles/Orders.css';
+import { API_ENDPOINTS } from '../config';
 
 function Orders() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -36,7 +37,7 @@ function Orders() {
   const refreshOrderData = async (userId) => {
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/orders?userID=${userId}`
+        API_ENDPOINTS.GET_USER_ORDERS(userId)
       );
       const result = await response.json();
       if (result.success) {
@@ -53,7 +54,7 @@ function Orders() {
   const fetchUserOrders = async (userId) => {
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/orders?userID=${userId}`
+        API_ENDPOINTS.GET_USER_ORDERS(userId)
       );
       const result = await response.json();
       if (result.success) {
